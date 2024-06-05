@@ -1,6 +1,6 @@
 name: openapi_freezed_dio_builder
 description: Generate models and API classes based on an OpenAPI document using Freezed and Dio.
-version: 0.9.4
+version: 0.9.7
 homepage: https://github.com/jonasbark/openapi_freezed_dio_builder/tree/master/packages/openapi_freezed_dio_builder
 
 environment:
