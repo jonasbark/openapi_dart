@@ -313,8 +313,7 @@ class OpenApiLibraryGenerator {
                 }
               }
 
-              clientCode.add(Code('''final uri = baseUri.replace(
-        queryParameters: queryParams, path: baseUri.path + '${path.key.replaceAll('{', '\${')}');'''));
+              clientCode.add(Code('''final uri = baseUri.replace(queryParameters: queryParams, path: baseUri.path + '${_convertPathParamsToCamelCase(path.key.replaceAll('{', '\${'))}');'''));
 
               if (successResponseBodyType == _dioResponseBody) {
                 clientCode.add(
@@ -407,6 +406,17 @@ class OpenApiLibraryGenerator {
         return refer('request').property('cookieParameter')([literalString(name)]);
     }
     // throw StateError('Invalid location: $location');
+  }
+
+  String _convertPathParamsToCamelCase(String path) {
+    final regex = RegExp(r'{(.*?)}');
+    return path.replaceAllMapped(regex, (match) {
+      final param = match.group(1);
+      if (param != null) {
+        return '{${param.camelCase}}';
+      }
+      return match.group(0)!;
+    });
   }
 
   void _createRequestBody(OpenApiContentType contentType, APIMediaType reqBody, bool isRequired, String operationName,
